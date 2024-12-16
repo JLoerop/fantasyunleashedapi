@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+// user model
 public class User {
     @Id
     @Column(name="user_id")
