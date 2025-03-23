@@ -1,7 +1,5 @@
 package com.joshua.fantasyunleashedapi.settings.Model;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -14,6 +12,7 @@ import lombok.AllArgsConstructor;
 public class Settings{
     @Id
     @Column(name="settings_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer settingsId;
     @Column(name="qb_tackle")
     private Boolean qbTackle;

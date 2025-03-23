@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 public class League {
     @Id
     @Column(name="league_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leagueId;
     @Column(name="league_name")
     private String leagueName;

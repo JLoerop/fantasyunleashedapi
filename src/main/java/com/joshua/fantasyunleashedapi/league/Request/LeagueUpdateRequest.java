@@ -9,10 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LeagueRequest {
-    private String leagueName;
-    private Integer teams;
-    private Integer userId;
+public class LeagueUpdateRequest {
+    private Integer leagueId;
     private Integer qbTackleValue;
     private Integer kickReturnValue;
     private Integer nonQbThrowTdValue;

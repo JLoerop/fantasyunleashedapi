@@ -15,14 +15,15 @@ import lombok.AllArgsConstructor;
 public class League_Users {
     @Id
     @Column(name="league_user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leagueUserId;
     private Boolean commissioner;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="league_id")
     private League league;
 }
