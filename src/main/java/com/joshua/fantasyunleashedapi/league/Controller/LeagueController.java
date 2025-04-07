@@ -5,6 +5,7 @@ import com.joshua.fantasyunleashedapi.league.Request.LeagueRequest;
 import com.joshua.fantasyunleashedapi.league.Request.LeagueUpdateRequest;
 import com.joshua.fantasyunleashedapi.league.Service.LeagueService;
 import com.joshua.fantasyunleashedapi.league_users.Model.League_Users;
+import com.joshua.fantasyunleashedapi.team.Model.Team;
 import com.joshua.fantasyunleashedapi.users.Model.User;
 import com.joshua.fantasyunleashedapi.users.Request.UserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,26 @@ public class LeagueController {
     @PostMapping("/joinleague")
     public League_Users joinLeague(@RequestParam Integer leagueId, @RequestParam("email") String email, @RequestParam("password") String password){
         return leagueService.joinLeague(leagueId, email, password);
+    }
+
+    // request for creating a team for a user
+    @PostMapping("/createteam")
+    public Team createTeam(@RequestParam Integer leagueId, @RequestParam String teamName, @RequestParam Integer userId){
+        return leagueService.createTeam(leagueId, teamName, userId);
+    }
+
+    @GetMapping("/getteam")
+    public Team getTeam(@RequestParam Integer leagueId, @RequestParam Integer userId){
+        return leagueService.getTeam(leagueId, userId);
+    }
+
+    @GetMapping("/getteamsinleague")
+    public List<Team> getTeamsInLeague(@RequestParam Integer leagueId){
+        return leagueService.getTeamsInLeague(leagueId);
+    }
+
+    @GetMapping("validateleaguesize")
+    public Boolean validateLeagueSize(@RequestParam Integer leagueId){
+        return leagueService.validateLeagueSize(leagueId);
     }
 }
