@@ -6,6 +6,8 @@ import com.joshua.fantasyunleashedapi.league.Request.LeagueRequest;
 import com.joshua.fantasyunleashedapi.league.Request.LeagueUpdateRequest;
 import com.joshua.fantasyunleashedapi.league_users.Model.League_Users;
 import com.joshua.fantasyunleashedapi.league_users.Repository.League_UserRepository;
+import com.joshua.fantasyunleashedapi.match.Model.Match;
+import com.joshua.fantasyunleashedapi.match.Repository.MatchRepository;
 import com.joshua.fantasyunleashedapi.rosters.Model.Rosters;
 import com.joshua.fantasyunleashedapi.rosters.Repository.RostersRepository;
 import com.joshua.fantasyunleashedapi.settings.Model.Settings;
@@ -36,6 +38,8 @@ public class LeagueService {
     private TeamRepository teamRepository;
     @Autowired
     private RostersRepository rostersRepository;
+    @Autowired
+    private MatchRepository matchRepository;
 
     // service that takes all of the league inputs and creates a league with all of the custom settings
     public League createLeague(LeagueRequest leagueRequest){
@@ -206,5 +210,49 @@ public class LeagueService {
         }
         PerformanceUtil.stop(startTime);
         return isFull;
+    }
+
+    public List<Team> getTeamsForUser(Integer userId){
+        Instant startTime = PerformanceUtil.start();
+        List<League_Users> leagueUsers = leagueUserRepository.findAllByUserId(userId);
+        List<Team> teams = new ArrayList<>();
+        for (League_Users leagueUser : leagueUsers){
+            Team team = teamRepository.findByLeagueUserId(leagueUser.getLeagueUserId());
+            if (team != null){
+                teams.add(team);
+            }
+        }
+        PerformanceUtil.stop(startTime);
+        return teams;
+    }
+    public List<Match> getMatchesForUser(Integer userId, Integer week){
+        Instant startTime = PerformanceUtil.start();
+        List<Match> matches = new ArrayList<>();
+        List<League_Users> leagueUsers = leagueUserRepository.findAllByUserId(userId);
+        for (League_Users leagueUser : leagueUsers){
+            Team team = teamRepository.findByLeagueUserId(leagueUser.getLeagueUserId());
+            if (team != null){
+                Match match = matchRepository.findMatchByTeamAndWeek(team, week);
+                if(match != null){
+                    matches.add(match);
+                }
+            }
+        }
+        PerformanceUtil.stop(startTime);
+        return matches;
+    }
+
+    public Team getTeamByTeamId(Integer teamId){
+        Instant startTime = PerformanceUtil.start();
+        Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+        PerformanceUtil.stop(startTime);
+        return team;
+    }
+
+    public Match getMatch(Integer teamId, Integer week){
+        Instant startTime = PerformanceUtil.start();
+        Match match = matchRepository.findMatchByTeamAndWeek(teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found")), week);
+        PerformanceUtil.stop(startTime);
+        return match;
     }
 }

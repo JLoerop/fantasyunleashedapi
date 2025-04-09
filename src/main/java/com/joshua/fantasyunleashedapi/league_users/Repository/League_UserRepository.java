@@ -17,4 +17,7 @@ public interface League_UserRepository extends JpaRepository<League_Users, Integ
 
     @Query(value = "SELECT * FROM league_users WHERE league_id = :leagueId", nativeQuery = true)
     List<League_Users> findByLeagueId(@Param("leagueId") Integer leagueId);
+
+    @Query("SELECT lu FROM League_Users lu WHERE lu.user.userId = :userId")
+    List<League_Users> findAllByUserId(@Param("userId") Integer userId);
 }

@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 public class League_Player_Points {
     @Id
     @Column(name="league_player_points_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leaguePlayerPointsId;
     @ManyToOne
     @JoinColumn(name="league_id")

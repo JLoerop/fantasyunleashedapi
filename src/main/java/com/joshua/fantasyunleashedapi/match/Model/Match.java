@@ -13,15 +13,16 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
+@Table(name = "matches")
 public class Match {
     @Id
     @Column(name="match_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer matchId;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="home_team_id")
     private Team homeTeam;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="away_team_id")
     private Team awayTeam;
     private Integer week;

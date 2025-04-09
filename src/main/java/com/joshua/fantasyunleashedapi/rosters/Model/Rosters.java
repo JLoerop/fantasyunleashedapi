@@ -39,6 +39,10 @@ public class Rosters {
     private Players wr2;
 
     @ManyToOne
+    @JoinColumn(name = "te_player_id")
+    private Players te;
+
+    @ManyToOne
     @JoinColumn(name = "flex_player_id")
     private Players flex;
 

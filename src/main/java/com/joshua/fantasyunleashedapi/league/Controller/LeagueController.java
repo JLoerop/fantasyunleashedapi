@@ -5,6 +5,8 @@ import com.joshua.fantasyunleashedapi.league.Request.LeagueRequest;
 import com.joshua.fantasyunleashedapi.league.Request.LeagueUpdateRequest;
 import com.joshua.fantasyunleashedapi.league.Service.LeagueService;
 import com.joshua.fantasyunleashedapi.league_users.Model.League_Users;
+import com.joshua.fantasyunleashedapi.match.Model.Match;
+import com.joshua.fantasyunleashedapi.rosters.Model.Rosters;
 import com.joshua.fantasyunleashedapi.team.Model.Team;
 import com.joshua.fantasyunleashedapi.users.Model.User;
 import com.joshua.fantasyunleashedapi.users.Request.UserRequest;
@@ -71,8 +73,28 @@ public class LeagueController {
         return leagueService.getTeamsInLeague(leagueId);
     }
 
-    @GetMapping("validateleaguesize")
+    @GetMapping("/validateleaguesize")
     public Boolean validateLeagueSize(@RequestParam Integer leagueId){
         return leagueService.validateLeagueSize(leagueId);
+    }
+
+    @GetMapping("/getteamsforuser")
+    public List<Team> getTeamsForUser(@RequestParam Integer userId){
+        return leagueService.getTeamsForUser(userId);
+    }
+
+    @GetMapping("/getmatchesforuser")
+    public List<Match> getMatchesForUser(@RequestParam Integer userId, @RequestParam Integer week){
+        return leagueService.getMatchesForUser(userId, week);
+    }
+
+    @GetMapping("/getteambyteamid")
+    public Team getTeamByTeamId(@RequestParam Integer teamId){
+        return leagueService.getTeamByTeamId(teamId);
+    }
+
+    @GetMapping("/getmatch")
+    public Match getMatch(@RequestParam Integer teamId, @RequestParam Integer week){
+        return leagueService.getMatch(teamId, week);
     }
 }
