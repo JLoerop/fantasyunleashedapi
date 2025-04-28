@@ -10,5 +10,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface Player_StatsRepository extends JpaRepository<Player_Stats, Integer> {
-
+    Player_Stats findByPlayer_PlayerId(Integer playerId);
 }

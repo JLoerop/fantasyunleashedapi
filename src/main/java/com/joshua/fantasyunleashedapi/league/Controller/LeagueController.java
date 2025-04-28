@@ -53,8 +53,8 @@ public class LeagueController {
 
     //request to handle when someone joins the league through the link
     @PostMapping("/joinleague")
-    public League_Users joinLeague(@RequestParam Integer leagueId, @RequestParam("email") String email, @RequestParam("password") String password){
-        return leagueService.joinLeague(leagueId, email, password);
+    public League_Users joinLeague(@RequestParam Integer leagueId, @RequestParam("email") String email){
+        return leagueService.joinLeague(leagueId, email);
     }
 
     // request for creating a team for a user
@@ -63,36 +63,43 @@ public class LeagueController {
         return leagueService.createTeam(leagueId, teamName, userId);
     }
 
+    // request to get a users team from the league id and user id
     @GetMapping("/getteam")
     public Team getTeam(@RequestParam Integer leagueId, @RequestParam Integer userId){
         return leagueService.getTeam(leagueId, userId);
     }
 
+    // request to get all of teams in a league
     @GetMapping("/getteamsinleague")
     public List<Team> getTeamsInLeague(@RequestParam Integer leagueId){
         return leagueService.getTeamsInLeague(leagueId);
     }
 
+    // request that validates a leagues size to verify if a user is able to join the league
     @GetMapping("/validateleaguesize")
     public Boolean validateLeagueSize(@RequestParam Integer leagueId){
         return leagueService.validateLeagueSize(leagueId);
     }
 
+    // request to get all of the teams that a user has
     @GetMapping("/getteamsforuser")
     public List<Team> getTeamsForUser(@RequestParam Integer userId){
         return leagueService.getTeamsForUser(userId);
     }
 
+    // request to get the matches that a user has that week
     @GetMapping("/getmatchesforuser")
     public List<Match> getMatchesForUser(@RequestParam Integer userId, @RequestParam Integer week){
         return leagueService.getMatchesForUser(userId, week);
     }
 
+    // request to get a team by sending the team id
     @GetMapping("/getteambyteamid")
     public Team getTeamByTeamId(@RequestParam Integer teamId){
         return leagueService.getTeamByTeamId(teamId);
     }
 
+    // request to get the matchup of that team for that weak
     @GetMapping("/getmatch")
     public Match getMatch(@RequestParam Integer teamId, @RequestParam Integer week){
         return leagueService.getMatch(teamId, week);

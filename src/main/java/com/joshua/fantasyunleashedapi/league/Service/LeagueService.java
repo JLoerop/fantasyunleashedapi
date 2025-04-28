@@ -133,7 +133,7 @@ public class LeagueService {
     }
 
     // service to handle the request of joining a league which creates a new league user and saves to the database
-    public League_Users joinLeague(Integer leagueId, String email, String password){
+    public League_Users joinLeague(Integer leagueId, String email){
         Instant startTime = PerformanceUtil.start();
         List<Team> teams = getTeamsInLeague(leagueId);
         League league = leagueRepository.findById(leagueId).orElseThrow(() -> new RuntimeException("League not found"));
@@ -142,13 +142,14 @@ public class LeagueService {
         }
         League_Users leagueUser = new League_Users();
         leagueUser.setCommissioner(false);
-        leagueUser.setUser(userRepository.findByEmailAndPassword(email, password));
+        leagueUser.setUser(userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found")));
         leagueUser.setLeague(leagueRepository.findById(leagueId).orElseThrow(() -> new RuntimeException("League not found")));
         leagueUserRepository.save(leagueUser);
         PerformanceUtil.stop(startTime);
         return leagueUser;
     }
 
+    // service that initializes a team by setting all spots on the roster to null and setting their team name
     public Team createTeam(Integer leagueId, String teamName, Integer userId){
         Instant startTime = PerformanceUtil.start();
         Team team = new Team();
@@ -178,6 +179,8 @@ public class LeagueService {
         PerformanceUtil.stop(startTime);
         return team;
     }
+
+    // service that returns a team of a certain user in a certain league
     public Team getTeam(Integer leagueId, Integer userId){
         Instant startTime = PerformanceUtil.start();
         League_Users leagueUser = leagueUserRepository.findByUserIdAndLeagueId(userId, leagueId);
@@ -186,6 +189,7 @@ public class LeagueService {
         return team;
     }
 
+    // service that first gets the league users and does a loop to get all of the teams by each user in the league
     public List<Team> getTeamsInLeague(Integer leagueId){
         Instant startTime = PerformanceUtil.start();
         List<Team> teams = new ArrayList<>();
@@ -199,6 +203,7 @@ public class LeagueService {
         return teams;
     }
 
+    // service that compares the size of the league with the amount of teams in the league already and returns true or false
     public Boolean validateLeagueSize(Integer leagueId){
         Instant startTime = PerformanceUtil.start();
         Boolean isFull = false;
@@ -212,6 +217,8 @@ public class LeagueService {
         return isFull;
     }
 
+    // service that gets a list of the league user ids a user has and goes through a loop that gets each team for each
+    // league they belong to
     public List<Team> getTeamsForUser(Integer userId){
         Instant startTime = PerformanceUtil.start();
         List<League_Users> leagueUsers = leagueUserRepository.findAllByUserId(userId);
@@ -225,6 +232,8 @@ public class LeagueService {
         PerformanceUtil.stop(startTime);
         return teams;
     }
+
+    // service that gets a list of the league user ids a user has and then gets matches that they are a part of by performing a loop
     public List<Match> getMatchesForUser(Integer userId, Integer week){
         Instant startTime = PerformanceUtil.start();
         List<Match> matches = new ArrayList<>();
@@ -242,6 +251,7 @@ public class LeagueService {
         return matches;
     }
 
+    // service that gets a users team by teamId
     public Team getTeamByTeamId(Integer teamId){
         Instant startTime = PerformanceUtil.start();
         Team team = teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
@@ -249,6 +259,7 @@ public class LeagueService {
         return team;
     }
 
+    // service that gets the match the certain team is in by team id and what week it is.
     public Match getMatch(Integer teamId, Integer week){
         Instant startTime = PerformanceUtil.start();
         Match match = matchRepository.findMatchByTeamAndWeek(teamRepository.findById(teamId).orElseThrow(() -> new RuntimeException("Team not found")), week);
