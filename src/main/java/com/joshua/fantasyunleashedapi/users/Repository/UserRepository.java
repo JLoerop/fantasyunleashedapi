@@ -15,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     boolean existsByUsername(String username);
 
     // custom jpa request to find by email and password
+    @Query("SELECT DISTINCT u FROM User u WHERE u.email = :email")
     Optional<User> findByEmail(@Param("email") String email);
 
     User findByEmailAndPassword(@Param("email") String email, @RequestParam("password") String password);
